@@ -68,9 +68,9 @@ function viewDepartments() {
 function addDepartment() {
     inquirer.prompt([
         {
-            //departments name
+            // get departments name
         }
     ]).then(answer => {
-
+        // connection query to insert into the department table
     })
 }
