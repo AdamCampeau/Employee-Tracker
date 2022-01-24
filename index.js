@@ -75,13 +75,22 @@ function addDepartment() {
         },
     ]).then(answer => {
         // connection query to insert into the department table
-        connection.query('INSERT INTO department SET ?;', (err,res) => {
+        connection.query('INSERT INTO department SET ?', (err,res) => {
             if (err) throw err;
             console.table(res);
-            answer.department_name;
-            startingQuestion()
+            title: res.title;
+            salary: res.salary;
+            department_id: res.department_id;
         })
-    )};
+        connection.query('INSERT INTO department SET ?', (err,res) => {
+            if (err) throw err;
+            console.table(res);
+            department_name: res.department_name;
+            startingQuestion();
+        });
+    });
+}
+
 
 function addEmployee() {
     inquirer.prompt([
@@ -101,13 +110,22 @@ function addEmployee() {
         message: 'What is their role? Salesperson, Front End Dev, Test Engineer',
         choices: [1,2,3]
     },
+    {
+        type:'input',
+        name:'manager_id',
+        message: 'Who is their manager? R. Sanchez, R. Fiennes, L. Oswald',
+        choices: [1,2,3]
+    }
+
 ]).then(answer => {
-    connection.query('UPDATE employee SET;', 
+    connection.query('INSERT INTO employee SET ?', 
     (err, res) => {
         if (err) throw err;
         console.table(res);
-        answer.role_id;
-        startingQuestion()
+        first_name: res.first_name;
+        last_name: res.last_name;
+        role_id: res.role_id;
+        manager_id: res.manager_id;
     })
 })}
 
@@ -155,3 +173,11 @@ function addRole() {
         startingQuestion()
     })
 })}
+
+function update() {
+    connection.query('SELECT * FROM employees ;', (err, res) => {
+        if (err) throw err;
+        console.table(res);
+        startingQuestion()
+    })
+}
