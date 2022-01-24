@@ -54,11 +54,11 @@ function startingQuestion() {
 }
 
 function viewAll() {
-
-};
+    connection.query("SELECT * FROM department FULL OUTER JOIN roles ON department ")
+}
 
 function viewDepartments() {
-    connection.query('SELECT * FROM department;', (err, res) => {
+    connection.query('SELECT * FROM department', (err, res) => {
         if (err) throw err;
         console.table(res);
         startingQuestion()
@@ -78,16 +78,16 @@ function addDepartment() {
         connection.query('INSERT INTO department SET ?', (err,res) => {
             if (err) throw err;
             console.table(res);
-            title: res.title;
-            salary: res.salary;
-            department_id: res.department_id;
+            title: answer.title;
+            salary: answer.salary;
+            department_id: answer.department_id;
         })
         connection.query('INSERT INTO department SET ?', (err,res) => {
             if (err) throw err;
             console.table(res);
-            department_name: res.department_name;
-            startingQuestion();
+            department_name: answer.department_name;   
         });
+        startingQuestion();
     });
 }
 
@@ -122,15 +122,15 @@ function addEmployee() {
     (err, res) => {
         if (err) throw err;
         console.table(res);
-        first_name: res.first_name;
-        last_name: res.last_name;
-        role_id: res.role_id;
-        manager_id: res.manager_id;
+        first_name: answer.first_name;
+        last_name: answer.last_name;
+        role_id: answer.role_id;
+        manager_id: answer.manager_id;
     })
 })}
 
 function viewRoles() {
-    connection.query('SELECT * FROM role_id;', (err, res) => {
+    connection.query('SELECT * FROM role_id', (err, res) => {
         if (err) throw err;
         console.table(res);
         startingQuestion()
@@ -138,7 +138,7 @@ function viewRoles() {
 }
 
 function viewEmployees() {
-    connection.query('SELECT * FROM employee;', (err, res) => {
+    connection.query('SELECT * FROM employee', (err, res) => {
         if (err) throw err;
         console.table(res);
         startingQuestion()
@@ -163,21 +163,72 @@ function addRole() {
         message: ' Role ID: '
     },
 ]).then(answer => {
-    connection.query('INSERT INTO roles SET;', 'SELECT * FROM roles', 
+    connection.query('INSERT INTO roles SET', 'SELECT * FROM roles', 
     (err, res) => {
         if (err) throw err;
-        answer.role.title
-        answer.role.salary,
-        answer.role.department_id,
+        title: answer.role.title;
+        salary: answer.role.salary;
+        department_id: answer.role.department_id;
         console.table(res);
         startingQuestion()
     })
 })}
 
 function update() {
-    connection.query('SELECT * FROM employees ;', (err, res) => {
-        if (err) throw err;
-        console.table(res);
-        startingQuestion()
+    inquirer.prompt([
+        {
+            type: 'list',
+            name: 'update',
+            message: 'What would you like to do?',
+            choices: ['Update All', 'Update Departments', 'Update Roles', 'Update Employees', 'Update Department', 'Update Role', 'Update Employee', 'Update Employees Role', 'Done']
+        }
+    ]).then(answer => {
+        if (answer.startingQuestion === 'Update All') {
+            updateAll()
+        } else if (answer.startingQuestion === 'Update Departments') {
+            updateDepartments()
+        }
+        else if (answer.startingQuestion === 'Update Roles') {
+            updateRoles()
+        }
+        else if (answer.startingQuestion === 'View Employees') {
+            viewEmployees()
+        }
+        else if (answer.startingQuestion === 'Update Department') {
+            addDepartment()
+        }
+        else if (answer.startingQuestion === 'Update Role') {
+            addRole()
+        }
+        else if (answer.startingQuestion === 'Update Employee') {
+            addEmployee()
+        }
+        else if (answer.startingQuestion === 'Update Employees Role') {
+            update()
+        } else {
+            connection.end()
+        }
+
     })
 }
+    connection.query('SELECT * FROM employee', (err, res) => {
+        if (err) throw err;
+        console.table(res);
+    })
+
+    inquirer.prompt([{
+        type: 'input',
+        name: 'employee',
+        message: 'Please enter the LAST NAME of the EMPLOYEE',
+    },
+    {
+        type: "input",
+        name: "role_id",
+        message: "What is their current role? Sales Person, Front End Dev, Test Eng, Create New ",
+        choices: [1,2,3,addRole],
+    },
+    
+]).then(answer => {
+    connection.query('UPDATE employee SET role_id = ${answer.role_id} WHERE id = ${answer.employee}', (err, res) => {
+        console.table(res);
+
