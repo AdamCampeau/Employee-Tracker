@@ -75,5 +75,10 @@ function addDepartment() {
         },
     ]).then(answer => {
         // connection query to insert into the department table
-    })
-}
+        connection.query('INSERT INTO department SET ?', (err,res) => {
+            if (err) throw err;
+            console.table(res);
+            answer.department_name;
+            startingQuestion()
+        })
+    )}
