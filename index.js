@@ -75,10 +75,83 @@ function addDepartment() {
         },
     ]).then(answer => {
         // connection query to insert into the department table
-        connection.query('INSERT INTO department SET ?', (err,res) => {
+        connection.query('INSERT INTO department SET ?;', (err,res) => {
             if (err) throw err;
             console.table(res);
             answer.department_name;
             startingQuestion()
         })
-    )}
+    )};
+
+function addEmployee() {
+    inquirer.prompt([
+    {
+        type: 'input',
+        name: 'first_name',
+        message: "What is the first name?"
+    },
+    {
+        type: 'input',
+        name: 'last_name',
+        message: 'What is the last name?'
+    },
+    {
+        type: 'input',
+        name: 'role_id',
+        message: 'What is their role? Salesperson, Front End Dev, Test Engineer',
+        choices: [1,2,3]
+    },
+]).then(answer => {
+    connection.query('UPDATE employee SET;', 
+    (err, res) => {
+        if (err) throw err;
+        console.table(res);
+        answer.role_id;
+        startingQuestion()
+    })
+})}
+
+function viewRoles() {
+    connection.query('SELECT * FROM role_id;', (err, res) => {
+        if (err) throw err;
+        console.table(res);
+        startingQuestion()
+    })
+}
+
+function viewEmployees() {
+    connection.query('SELECT * FROM employee;', (err, res) => {
+        if (err) throw err;
+        console.table(res);
+        startingQuestion()
+    })
+}
+
+function addRole() {
+    inquirer.prompt([
+    {
+        type: 'input',
+        name: 'title',
+        message: 'Role Name: '
+    },
+    {
+        type: 'input',
+        name: 'salary',
+        message: 'Role Salary: '
+    },
+    {
+        type: 'input',
+        name:'department_id',
+        message: ' Role ID: '
+    },
+]).then(answer => {
+    connection.query('INSERT INTO roles SET;', 'SELECT * FROM roles', 
+    (err, res) => {
+        if (err) throw err;
+        answer.role.title
+        answer.role.salary,
+        answer.role.department_id,
+        console.table(res);
+        startingQuestion()
+    })
+})}
