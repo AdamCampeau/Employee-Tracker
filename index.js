@@ -69,7 +69,10 @@ function addDepartment() {
     inquirer.prompt([
         {
             // get departments name
-        }
+            type: 'input',
+            name: 'departmentName',
+            message: 'Enter Department Name'
+        },
     ]).then(answer => {
         // connection query to insert into the department table
     })
