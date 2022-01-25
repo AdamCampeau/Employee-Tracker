@@ -202,52 +202,107 @@ function update() {
             type: 'list',
             name: 'update',
             message: 'What would you like to do?',
-            choices: ['Update All', 'Update Departments', 'Update Roles', 'Update Employees', 'Update Department', 'Update Role', 'Update Employee', 'Update Employees Role', 'Done']
+            choices: ['Update All', 'Update Department', 'Update Role', 'Update Employee','Update Salary', 'Done']
         }
     ]).then(answer => {
-        if (answer.startingQuestion === 'Update All') {
+        if (answer.update === 'Update All') {
             updateAll()
-        } else if (answer.startingQuestion === 'Update Departments') {
-            updateDepartments()
+        } else if (answer.update === 'Update Department') {
+            updateDepartment()
         }
-        else if (answer.startingQuestion === 'Update Roles') {
-            updateRoles()
+        else if (answer.update === 'Update Role') {
+            updateRole()
         }
-        else if (answer.startingQuestion === 'View Employees') {
-            viewEmployees()
+        else if (answer.update === 'Update Employee') {
+            updateEmployee()
         }
-        else if (answer.startingQuestion === 'Update Department') {
-            addDepartment()
-        }
-        else if (answer.startingQuestion === 'Update Role') {
-            addRole()
-        }
-        else if (answer.startingQuestion === 'Update Employee') {
-            addEmployee()
-        }
-        else if (answer.startingQuestion === 'Update Employees Role') {
-            update()
+        else if (answer.update === 'Update Salary') {
+            updateSalary()
         } else {
             connection.end()
         }
 
     })
 }
-    connection.query('SELECT * FROM employee', (err, res) => {
-        if (err) throw err;
-        console.table(res);
-    })
+function updateDepartment() {
+    inquirer.prompt([
+        {
+            // update department name
+            type: 'input',
+            name: 'department',
+            message: 'Update Department Name'
+        },
+        {
+            // update department salary
+            type: 'input',
+            name: 'salary',
+            message: 'Update Department Salary'
+        },
+        {
+            // update department_id
+            type: 'input',
+            name: 'department_id',
+            message: 'Update Department Name'
+        },
+    ]).then(answer => {
+        // connection query to insert into the department table
+        connection.query('UPDATE department SET ?', (err,res) => {
+            if (err) throw err;
+            console.table(res);
+            title: answer.title;
+            salary: answer.salary;
+            department_id: answer.department_id; 
+            updateDepartment();
+            update();
+        });
+    })}
 
-    inquirer.prompt([{
-        type: 'input',
-        name: 'employee',
-        message: 'Please enter the LAST NAME of the EMPLOYEE',
-    },
-    {
-        type: "input",
-        name: "role_id",
-        message: "What is their current role? Sales Person, Front End Dev, Test Eng, Create New ",
-        choices: [1,2,3,addRole],
-    },
-        if (err) throw err;
-    })})
+function updateEmployee() {
+        inquirer.prompt([
+        {
+            type: 'input',
+            name: 'first_name',
+            message: "What is their first name?"
+        },
+        {
+            type: 'input',
+            name: 'last_name',
+            message: 'What is their last name?'
+        },
+        {
+            type: 'input',
+            name: 'role_id',
+            message: 'What is their role? Salesperson, Front End Dev, Test Engineer',
+            choices: [1,2,3]
+        },
+        {
+            type:'input',
+            name:'manager_id',
+            message: 'Who is their manager? R. Sanchez, R. Fiennes, L. Oswald',
+            choices: [1,2,3]
+        }
+    
+    ]).then(answer => {
+        connection.query('UPDATE INTO employee SET ?', 
+        (err, res) => {
+            if (err) throw err;
+            console.table(res);
+            first_name: answer.first_name;
+            last_name: answer.last_name;
+            role_id: answer.role_id;
+            manager_id: answer.manager_id;
+            updateEmployee();
+            update();
+        })
+    })}
+
+function updateRole() {
+    connection.query('SELECT * FROM employee ORDER BY last_name', (err, res) => {
+        var employee = res.map((employee) => {
+            console.log(res);
+            return {
+                name: employee.first_name + ' ' + employee.last_name,
+                value: employee.id
+            }
+        })
+    
