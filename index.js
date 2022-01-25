@@ -54,13 +54,19 @@ function startingQuestion() {
 }
 
 function viewAll() {
-    connection.query("SELECT * FROM department FULL OUTER JOIN roles ON department ")
+    connection.query('SELECT * FROM department FULL OUTER JOIN roles ON department ?', (err,res) => {
+    if (err) throw err;
+        console.table(res);
+        viewAll();
+        startingQuestion()
+    })
 }
 
 function viewDepartments() {
-    connection.query('SELECT * FROM department', (err, res) => {
+    connection.query('SELECT * FROM department ?', (err, res) => {
         if (err) throw err;
         console.table(res);
+        viewDepartments();
         startingQuestion()
     })
 }
@@ -68,9 +74,21 @@ function viewDepartments() {
 function addDepartment() {
     inquirer.prompt([
         {
-            // get departments name
+            // add department name
             type: 'input',
-            name: 'departmentName',
+            name: 'department',
+            message: 'Enter Department Name'
+        },
+        {
+            // add department salary
+            type: 'input',
+            name: 'salary',
+            message: 'Enter Department Salary'
+        },
+        {
+            // get department_id
+            type: 'input',
+            name: 'department_id',
             message: 'Enter Department Name'
         },
     ]).then(answer => {
@@ -82,11 +100,12 @@ function addDepartment() {
             salary: answer.salary;
             department_id: answer.department_id;
         })
-        connection.query('INSERT INTO department SET ?', (err,res) => {
-            if (err) throw err;
-            console.table(res);
-            department_name: answer.department_name;   
-        });
+        //connection.query('INSERT INTO department SET ?', (err,res) => {
+        //    if (err) throw err;
+        //    console.table(res);
+        //   answer.department_name  === department_name   
+        //});
+        addDepartment();
         startingQuestion();
     });
 }
@@ -97,12 +116,12 @@ function addEmployee() {
     {
         type: 'input',
         name: 'first_name',
-        message: "What is the first name?"
+        message: "What is their first name?"
     },
     {
         type: 'input',
         name: 'last_name',
-        message: 'What is the last name?'
+        message: 'What is their last name?'
     },
     {
         type: 'input',
@@ -130,17 +149,19 @@ function addEmployee() {
 })}
 
 function viewRoles() {
-    connection.query('SELECT * FROM role_id', (err, res) => {
+    connection.query('SELECT * FROM role_id ?', (err, res) => {
         if (err) throw err;
         console.table(res);
+        viewRoles();
         startingQuestion()
     })
 }
 
 function viewEmployees() {
-    connection.query('SELECT * FROM employee', (err, res) => {
+    connection.query('SELECT * FROM employee ?', (err, res) => {
         if (err) throw err;
         console.table(res);
+        viewEmployees();
         startingQuestion()
     })
 }
@@ -155,12 +176,12 @@ function addRole() {
     {
         type: 'input',
         name: 'salary',
-        message: 'Role Salary: '
+        message: 'Salary: '
     },
     {
         type: 'input',
         name:'department_id',
-        message: ' Role ID: '
+        message: 'Department: '
     },
 ]).then(answer => {
     connection.query('INSERT INTO roles SET', 'SELECT * FROM roles', 
@@ -170,6 +191,7 @@ function addRole() {
         salary: answer.role.salary;
         department_id: answer.role.department_id;
         console.table(res);
+        addRole();
         startingQuestion()
     })
 })}
@@ -227,8 +249,5 @@ function update() {
         message: "What is their current role? Sales Person, Front End Dev, Test Eng, Create New ",
         choices: [1,2,3,addRole],
     },
-    
-]).then(answer => {
-    connection.query('UPDATE employee SET role_id = ${answer.role_id} WHERE id = ${answer.employee}', (err, res) => {
-        console.table(res);
-
+        if (err) throw err;
+    })})
