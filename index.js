@@ -21,10 +21,10 @@ function startingQuestion() {
             type: 'list',
             name: 'startingQuestion',
             message: 'What would you like to do?',
-            choices: ['View All', 'View Departments', 'View Roles', 'View Employees', 'Add Department', 'Add Role', 'Add Employee', 'Update Employees Role', 'Done']
+            choices: ['View Database', 'View Departments', 'View Roles', 'View Employees', 'Add Department', 'Add Role', 'Add Employee', 'Update Employees Role', 'Done']
         }
     ]).then(answer => {
-        if (answer.startingQuestion === 'View All') {
+        if (answer.startingQuestion === 'View Databases') {
             viewAll()
         } else if (answer.startingQuestion === 'View Departments') {
             viewDepartments()
@@ -54,19 +54,18 @@ function startingQuestion() {
 }
 
 function viewAll() {
-    connection.query('SELECT * FROM department FULL OUTER JOIN roles ON department ?', (err,res) => {
+    connection.query('SHOW DATABASES', (err,res) => {
     if (err) throw err;
         console.table(res);
-        viewAll();
-        startingQuestion()
+        //viewAll();
     })
 }
 
 function viewDepartments() {
-    connection.query('SELECT * FROM department ?', (err, res) => {
+    connection.query('SELECT * FROM department', (err, res) => {
         if (err) throw err;
         console.table(res);
-        viewDepartments();
+        //viewDepartments();
         startingQuestion()
     })
 }
@@ -105,7 +104,7 @@ function addDepartment() {
         //    console.table(res);
         //   answer.department_name  === department_name   
         //});
-        addDepartment();
+        // addDepartment();
         startingQuestion();
     });
 }
@@ -137,7 +136,7 @@ function addEmployee() {
     }
 
 ]).then(answer => {
-    connection.query('INSERT INTO employee SET ?', 
+    connection.query('INSERT INTO employee SET ;', 
     (err, res) => {
         if (err) throw err;
         console.table(res);
@@ -145,25 +144,25 @@ function addEmployee() {
         last_name: answer.last_name;
         role_id: answer.role_id;
         manager_id: answer.manager_id;
-        addEmployee();
+        // addEmployee();
         startingQuestion()
     })
 })}
 
 function viewRoles() {
-    connection.query('SELECT * FROM role_id ?', (err, res) => {
+    connection.query('SELECT * FROM role; ', (err, res) => {
         if (err) throw err;
         console.table(res);
-        viewRoles();
+        // viewRoles();
         startingQuestion()
     })
 }
 
 function viewEmployees() {
-    connection.query('SELECT * FROM employee ?', (err, res) => {
+    connection.query('SELECT * FROM employee;', (err, res) => {
         if (err) throw err;
         console.table(res);
-        viewEmployees();
+        //viewEmployees();
         startingQuestion()
     })
 }
@@ -186,7 +185,7 @@ function addRole() {
         message: 'Department: '
     },
 ]).then(answer => {
-    connection.query('INSERT INTO roles SET', 'SELECT * FROM roles', 
+    connection.query('INSERT INTO role SET;', 
     (err, res) => {
         if (err) throw err;
         title: answer.role_id.title;
