@@ -84,12 +84,6 @@ function addDepartment() {
             name: 'salary',
             message: 'Enter Department Salary'
         },
-        {
-            // get department_id
-            type: 'input',
-            name: 'department_id',
-            message: 'Enter Department Name'
-        },
     ]).then(answer => {
         // connection query to insert into the department table
         connection.query('INSERT INTO department SET ?', (err,res) => {

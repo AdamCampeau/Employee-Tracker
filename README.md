@@ -52,12 +52,48 @@ No license
 
 ## Demo
 
+![image](https://user-images.githubusercontent.com/91493786/151246485-67bd7c7d-c93e-44f2-993b-20cdfbdcd9b8.png)
+
+
+![image](https://user-images.githubusercontent.com/91493786/151246640-e7efd3a9-ec3b-4b9a-bbe4-3bf8be321f95.png)
+
+![image](https://user-images.githubusercontent.com/91493786/151247108-6bc93d10-2219-4680-9d82-89120523e045.png)
 
 ## Testing
 
 npm start
 
+## Issues
+
+* [ ] view databases
+
+    * nothing appears, connection closes      
+   
+* [X] view all deptartments
+
+* [X] view roles
+
+* [X] view employees 
+
+* [X] add department 
+
+* [ ] add role
+
+    * mySQL syntax error
+
+* [ ] add employee
+
+    * mySQL syntax error
+
+* [ ] update 
+
+     * mySQL syntax error
+
+* [x] connection ends
+
+
 ## Future_Development
+
 None
 
 ## Contributors
@@ -73,4 +109,4 @@ acampeau3@hotmail.com
 https://watch.screencastify.com/v/hvMDcHtnPKXTKvp6mkTk
 
 ## GitHub URL
-https://github.com/AdamCampeau/ReadMe-Generator/
+https://github.com/AdamCampeau/MySQL-Employee-Database
