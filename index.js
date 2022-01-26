@@ -145,6 +145,8 @@ function addEmployee() {
         last_name: answer.last_name;
         role_id: answer.role_id;
         manager_id: answer.manager_id;
+        addEmployee();
+        startingQuestion()
     })
 })}
 
@@ -187,14 +189,17 @@ function addRole() {
     connection.query('INSERT INTO roles SET', 'SELECT * FROM roles', 
     (err, res) => {
         if (err) throw err;
-        title: answer.role.title;
-        salary: answer.role.salary;
-        department_id: answer.role.department_id;
+        title: answer.role_id.title;
+        salary: answer.role_id.salary;
+        department_id: answer.role_id.department_id;
         console.table(res);
         addRole();
         startingQuestion()
     })
 })}
+
+
+// similiar to startingQuestions, updates tables
 
 function update() {
     inquirer.prompt([
@@ -215,17 +220,29 @@ function update() {
         }
         else if (answer.update === 'Update Employee') {
             updateEmployee()
-        }
-        else if (answer.update === 'Update Salary') {
-            updateSalary()
         } else {
             connection.end()
         }
 
     })
 }
+
+function updateAll() {
+    updateEmployee();
+    updateRole();
+    updateDepartment();
+    update()
+}
+
 function updateDepartment() {
     inquirer.prompt([
+        {
+            // select department name
+            type: 'input',
+            name: 'department',
+            message: 'Select Department: Salesperson, Front End Dev, Test Engineer',
+            choices:[1,2,3]
+        },
         {
             // update department name
             type: 'input',
@@ -246,7 +263,7 @@ function updateDepartment() {
         },
     ]).then(answer => {
         // connection query to insert into the department table
-        connection.query('UPDATE department SET ?', (err,res) => {
+        connection.query('UPDATE department, SET department ?', (err,res) => {
             if (err) throw err;
             console.table(res);
             title: answer.title;
@@ -261,13 +278,10 @@ function updateEmployee() {
         inquirer.prompt([
         {
             type: 'input',
-            name: 'first_name',
-            message: "What is their first name?"
-        },
-        {
-            type: 'input',
             name: 'last_name',
-            message: 'What is their last name?'
+            message: 'What is their last name? Fiennes, Oswald, Sanchez',
+            choices: [2,1,3]
+            
         },
         {
             type: 'input',
@@ -283,7 +297,7 @@ function updateEmployee() {
         }
     
     ]).then(answer => {
-        connection.query('UPDATE INTO employee SET ?', 
+        connection.query('UPDATE employee, SET employee ?', 
         (err, res) => {
             if (err) throw err;
             console.table(res);
@@ -297,12 +311,39 @@ function updateEmployee() {
     })}
 
 function updateRole() {
-    connection.query('SELECT * FROM employee ORDER BY last_name', (err, res) => {
-        var employee = res.map((employee) => {
-            console.log(res);
-            return {
-                name: employee.first_name + ' ' + employee.last_name,
-                value: employee.id
-            }
+        inquirer.prompt([
+        {
+            type: 'input',
+            name: 'role_id',
+            message: 'Select Role to Update: Salesperson, Front End Dev, Test Eng',
+            choices: [1,2,3]
+                
+        },
+        {
+            type: 'input',
+            name: 'title',
+            message: 'Role Name: '
+        },
+        {
+            type: 'input',
+            name: 'salary',
+            message: 'Salary: '
+        },
+        {
+            type: 'input',
+            name:'department_id',
+            message: 'Department: '
+        },
+    ]).then(answer => {
+        connection.query('SELECT role, UPDATE role ', 
+        (err, res) => {
+            if (err) throw err;
+            title: answer.role_id.title;
+            salary: answer.role_id.salary;
+            department_id: answer.role_id.department_id;
+            console.table(res);
+            updateRole();
+            update()
         })
+    })}
     
