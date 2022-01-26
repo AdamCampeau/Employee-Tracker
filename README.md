@@ -38,9 +38,17 @@ No license
 
 ## Installation
 
-Install MySql2: https://dev.mysql.com/doc/mysql-shell/8.0/en/mysql-shell-install.html
+    * Install MySql2: 
+        
+        https://dev.mysql.com/doc/mysql-shell/8.0/en/mysql-shell-install.html
 
-type in command line: npm install inquirer
+    * Type in terminal: 
+
+        mysql -u root -p
+
+    *  Open a new terminal, and type: 
+
+        npm install inquirer
 
 ## Demo
 
