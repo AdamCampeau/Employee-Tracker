@@ -30,7 +30,7 @@
 I WANT to be able to view and manage the departments, roles, and employees in my company
 SO THAT I can organize and plan my business.
 
-MySql database, contains departments, employees, and their roles.
+MySql database, contains departments, employees, roles
 
 ## License
 
@@ -73,17 +73,13 @@ npm start
 
 * [X] add department 
 
-* [ ] add role
+* [X] add role
 
-    * mySQL syntax error
-
-* [ ] add employee
-
-    * mySQL syntax error
+* [X] add employee
 
 * [ ] update 
 
-     * mySQL syntax error
+     Exits
 
 * [x] connection ends
 

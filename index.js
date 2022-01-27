@@ -83,9 +83,9 @@ function addDepartment() {
         connection.query('INSERT INTO department SET ?', (err,res) => {
             if (err) throw err;
             console.table(res);
-            title: answer.title;
-            salary: answer.salary;
-            department_id: answer.department_id;
+            //title: answer.title;
+            //salary: answer.salary;
+            //department_id: answer.department_id;
         })
         startingQuestion();
     });
@@ -120,10 +120,11 @@ function addEmployee() {
 
 ]).then(answers => {
     const params = [answers.first_name,answers.last_name,answers.role, answers.manager_id]
-    connection.query('INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)',params,(err, res) => {
+    connection.query('INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)',params,(err, res) => {
         if (err) throw err;
         console.table(res);
     })
+    startingQuestion();
 })}
 
 // VIEW ROLES
@@ -148,7 +149,8 @@ function viewEmployees() {
     })
 }
 
-// ADD ROLES
+// ADD ROLE
+// SALARY MUST USE INTEGER WITH NO SPECIAL CHARACTERS OR SPACES 
 
 function addRole() {
     inquirer.prompt([
@@ -165,13 +167,15 @@ function addRole() {
     {
         type: 'input',
         name:'department_id',
-        message: 'Department: '
+        message: 'Select Department: Sales, Technology, QA ',
+        choices:[1,2,3]
     },
 ]).then(answer => {
-    const params = [answer.title, answer.salary, answer.dpertment_id]
+    const params = [answer.title, answer.salary, answer.department_id]
     connection.query('INSERT INTO role (title,salary,department_id) VALUES (?, ?, ?)',params,(err, res) => {
         if (err) throw err;
         console.table(res);
+        startingQuestion()
     })
 })}
 
@@ -184,17 +188,18 @@ function update() {
             type: 'list',
             name: 'update',
             message: 'What would you like to do?',
-            choices: ['Update Department', 'Update Role', 'Update Salary', 'Done']
+            choices: ['Update Department', 'Update Salary', 'Back', 'Done']
         }
     ]).then(answer => {
         if (answer.update === 'Update Department') {
             updateDepartment()
         }
-        else if (answer.update === 'Update Role') {
-            updateRole()
-        }
         else if (answer.update === 'Update Salary') {
             updateSalary()
+        }
+        else if (answer.update === 'Back') {
+            startingQuestion()
+
         } else {
             connection.end()
         }
@@ -226,4 +231,33 @@ function updateDepartment() {
         console.table(res);
     };
 })}
+
+
+// UPDATE EMPLOYEE SALARY
+
+function updateSalary() {
+    inquirer.prompt([
+    {
+        type: 'input',
+        name: 'last_name',
+        message: 'Select employee by last name: R.Sanchez, R.Fiennes, L.Oswald',
+        choices:[1,2,3]
+    },
+    {
+        // add department name
+        type: 'input',
+        name: 'dsalary',
+        message: 'Update salary'
+    },
+
+]).then(answers => {
+    const updateParams = [answers.role_id]
+    connection.query('UPDATE salary SET = ? WHERE last_name = ?'),updateParams,(err, res) => {
+        if (err) throw err;
+        console.table(res);
+    };
+})}
+
+
+
 
