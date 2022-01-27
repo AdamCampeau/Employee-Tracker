@@ -21,7 +21,7 @@ function startingQuestion() {
             type: 'list',
             name: 'startingQuestion',
             message: 'What would you like to do?',
-            choices: ['View Departments', 'View Roles', 'View Employees', 'Add Department', 'Add Role', 'Add Employee', 'Update Employees Role', 'Done']
+            choices: ['View Departments', 'View Roles', 'View Employees', 'Add Department', 'Add Role', 'Add Employee', 'Update Employee', 'Done']
         }
     ]).then(answer => {
         if (answer.startingQuestion === 'View Departments') {
