@@ -42,7 +42,7 @@ function startingQuestion() {
         else if (answer.startingQuestion === 'Add Employee') {
             addEmployee()
         }
-        else if (answer.startingQuestion === 'Update Employees Role') {
+        else if (answer.startingQuestion === 'Update Employee') {
             update()
         } else {
             connection.end()
@@ -50,6 +50,8 @@ function startingQuestion() {
 
     })
 }
+
+// VIEW DEPARTMENTS
 
 function viewDepartments() {
     connection.query('SELECT * FROM department', (err, res) => {
@@ -59,6 +61,8 @@ function viewDepartments() {
         startingQuestion()
     })
 }
+
+// ADD DEPARTMENTS
 
 function addDepartment() {
     inquirer.prompt([
@@ -83,16 +87,11 @@ function addDepartment() {
             salary: answer.salary;
             department_id: answer.department_id;
         })
-        //connection.query('INSERT INTO department SET ?', (err,res) => {
-        //    if (err) throw err;
-        //    console.table(res);
-        //   answer.department_name  === department_name   
-        //});
-        // addDepartment();
         startingQuestion();
     });
 }
 
+// ADD EMPLOYEE
 
 function addEmployee() {
     inquirer.prompt([
@@ -120,17 +119,14 @@ function addEmployee() {
     }
 
 ]).then(answers => {
-    const params = [answers.first_name, answers.last_name, answer.role, answer.manager_id]
+    const params = [answers.first_name,answers.last_name,answers.role, answers.manager_id]
     connection.query('INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)',params,(err, res) => {
         if (err) throw err;
         console.table(res);
-        
-        //first_name: answer.first_name;
-        //last_name: answer.last_name;
-        //role_id: answer.role_id;
-        //manager_id: answer.manager_id;
     })
 })}
+
+// VIEW ROLES
 
 function viewRoles() {
     connection.query('SELECT * FROM role; ', (err, res) => {
@@ -141,6 +137,8 @@ function viewRoles() {
     })
 }
 
+// VIEW EMPLOYEES
+
 function viewEmployees() {
     connection.query('SELECT * FROM employee;', (err, res) => {
         if (err) throw err;
@@ -149,6 +147,8 @@ function viewEmployees() {
         startingQuestion()
     })
 }
+
+// ADD ROLES
 
 function addRole() {
     inquirer.prompt([
@@ -168,20 +168,15 @@ function addRole() {
         message: 'Department: '
     },
 ]).then(answer => {
-    connection.query('INSERT INTO role SET;', 
-    (err, res) => {
+    const params = [answer.title, answer.salary, answer.dpertment_id]
+    connection.query('INSERT INTO role (title,salary,department_id) VALUES (?, ?, ?)',params,(err, res) => {
         if (err) throw err;
-        title: answer.role_id.title;
-        salary: answer.role_id.salary;
-        department_id: answer.role_id.department_id;
         console.table(res);
-        addRole();
-        startingQuestion()
     })
 })}
 
 
-// similiar to startingQuestions, updates tables
+// UPDATE EMPLOYEE FIELD PROMPT
 
 function update() {
     inquirer.prompt([
@@ -189,19 +184,17 @@ function update() {
             type: 'list',
             name: 'update',
             message: 'What would you like to do?',
-            choices: ['Update All', 'Update Department', 'Update Role', 'Update Employee','Update Salary', 'Done']
+            choices: ['Update Department', 'Update Role', 'Update Salary', 'Done']
         }
     ]).then(answer => {
-        if (answer.update === 'Update All') {
-            updateAll()
-        } else if (answer.update === 'Update Department') {
+        if (answer.update === 'Update Department') {
             updateDepartment()
         }
         else if (answer.update === 'Update Role') {
             updateRole()
         }
-        else if (answer.update === 'Update Employee') {
-            updateEmployee()
+        else if (answer.update === 'Update Salary') {
+            updateSalary()
         } else {
             connection.end()
         }
@@ -209,123 +202,28 @@ function update() {
     })
 }
 
-function updateAll() {
-    updateEmployee();
-    updateRole();
-    updateDepartment();
-    update()
-}
+// UPDATE EMPLOYEE DEPARTMENT
 
 function updateDepartment() {
     inquirer.prompt([
-        {
-            // select department name
-            type: 'input',
-            name: 'department',
-            message: 'Select Department: Salesperson, Front End Dev, Test Engineer',
-            choices:[1,2,3]
-        },
-        {
-            // update department name
-            type: 'input',
-            name: 'department',
-            message: 'Update Department Name'
-        },
-        {
-            // update department salary
-            type: 'input',
-            name: 'salary',
-            message: 'Update Department Salary'
-        },
-        {
-            // update department_id
-            type: 'input',
-            name: 'department_id',
-            message: 'Update Department Name'
-        },
-    ]).then(answer => {
-        // connection query to insert into the department table
-        connection.query('UPDATE department, SET department ?', (err,res) => {
-            if (err) throw err;
-            console.table(res);
-            title: answer.title;
-            salary: answer.salary;
-            department_id: answer.department_id; 
-            updateDepartment();
-            update();
-        });
-    })}
+    {
+        type: 'input',
+        name: 'last_name',
+        message: 'Select employee by last name: R.Sanchez, R.Fiennes, L.Oswald',
+        choices:[1,2,3]
+    },
+    {
+        // add department name
+        type: 'input',
+        name: 'department',
+        message: 'Update Department Name'
+    },
 
-function updateEmployee() {
-        inquirer.prompt([
-        {
-            type: 'input',
-            name: 'last_name',
-            message: 'What is their last name? Fiennes, Oswald, Sanchez',
-            choices: [2,1,3]
-            
-        },
-        {
-            type: 'input',
-            name: 'role_id',
-            message: 'What is their role? Salesperson, Front End Dev, Test Engineer',
-            choices: [1,2,3]
-        },
-        {
-            type:'input',
-            name:'manager_id',
-            message: 'Who is their manager? R. Sanchez, R. Fiennes, L. Oswald',
-            choices: [1,2,3]
-        }
-    
-    ]).then(answer => {
-        connection.query('UPDATE employee, SET employee ?', 
-        (err, res) => {
-            if (err) throw err;
-            console.table(res);
-            first_name: answer.first_name;
-            last_name: answer.last_name;
-            role_id: answer.role_id;
-            manager_id: answer.manager_id;
-            updateEmployee();
-            update();
-        })
-    })}
+]).then(answers => {
+    const updateParams = [answers.role_id]
+    connection.query('UPDATE role_id SET = ? WHERE last_name = ?'),updateParams,(err, res) => {
+        if (err) throw err;
+        console.table(res);
+    };
+})}
 
-function updateRole() {
-        inquirer.prompt([
-        {
-            type: 'input',
-            name: 'role_id',
-            message: 'Select Role to Update: Salesperson, Front End Dev, Test Eng',
-            choices: [1,2,3]
-                
-        },
-        {
-            type: 'input',
-            name: 'title',
-            message: 'Role Name: '
-        },
-        {
-            type: 'input',
-            name: 'salary',
-            message: 'Salary: '
-        },
-        {
-            type: 'input',
-            name:'department_id',
-            message: 'Department: '
-        },
-    ]).then(answer => {
-        connection.query('SELECT role, UPDATE role ', 
-        (err, res) => {
-            if (err) throw err;
-            title: answer.role_id.title;
-            salary: answer.role_id.salary;
-            department_id: answer.role_id.department_id;
-            console.table(res);
-            updateRole();
-            update()
-        })
-    })}
-    
