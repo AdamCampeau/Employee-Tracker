@@ -21,12 +21,10 @@ function startingQuestion() {
             type: 'list',
             name: 'startingQuestion',
             message: 'What would you like to do?',
-            choices: ['View Database', 'View Departments', 'View Roles', 'View Employees', 'Add Department', 'Add Role', 'Add Employee', 'Update Employees Role', 'Done']
+            choices: ['View Departments', 'View Roles', 'View Employees', 'Add Department', 'Add Role', 'Add Employee', 'Update Employees Role', 'Done']
         }
     ]).then(answer => {
-        if (answer.startingQuestion === 'View Databases') {
-            viewAll()
-        } else if (answer.startingQuestion === 'View Departments') {
+        if (answer.startingQuestion === 'View Departments') {
             viewDepartments()
         }
         else if (answer.startingQuestion === 'View Roles') {
@@ -50,14 +48,6 @@ function startingQuestion() {
             connection.end()
         }
 
-    })
-}
-
-function viewAll() {
-    connection.query('SHOW DATABASES', (err,res) => {
-    if (err) throw err;
-        console.table(res);
-        //viewAll();
     })
 }
 
@@ -118,7 +108,7 @@ function addEmployee() {
     },
     {
         type: 'input',
-        name: 'role_id',
+        name: 'role',
         message: 'What is their role? Salesperson, Front End Dev, Test Engineer',
         choices: [1,2,3]
     },
@@ -129,17 +119,16 @@ function addEmployee() {
         choices: [1,2,3]
     }
 
-]).then(answer => {
-    connection.query('INSERT INTO employee SET ;', 
-    (err, res) => {
+]).then(answers => {
+    const params = [answers.first_name, answers.last_name, answer.role, answer.manager_id]
+    connection.query('INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)',params,(err, res) => {
         if (err) throw err;
         console.table(res);
-        first_name: answer.first_name;
-        last_name: answer.last_name;
-        role_id: answer.role_id;
-        manager_id: answer.manager_id;
-        // addEmployee();
-        startingQuestion()
+        
+        //first_name: answer.first_name;
+        //last_name: answer.last_name;
+        //role_id: answer.role_id;
+        //manager_id: answer.manager_id;
     })
 })}
 

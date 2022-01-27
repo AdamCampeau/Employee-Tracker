@@ -64,11 +64,7 @@ No license
 npm start
 
 ## Issues
-
-* [ ] view databases
-
-    * nothing appears, connection closes      
-   
+  
 * [X] view all deptartments
 
 * [X] view roles
@@ -109,4 +105,4 @@ acampeau3@hotmail.com
 https://watch.screencastify.com/v/hvMDcHtnPKXTKvp6mkTk
 
 ## GitHub URL
-https://github.com/AdamCampeau/MySQL-Employee-Database
+https://github.com/AdamCampeau/git check
