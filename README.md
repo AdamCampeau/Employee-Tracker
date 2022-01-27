@@ -86,7 +86,6 @@ npm start
 
 ## Future_Development
 
-None
 
 ## Contributors
 Adam Campeau

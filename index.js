@@ -188,7 +188,7 @@ function update() {
             type: 'list',
             name: 'update',
             message: 'What would you like to do?',
-            choices: ['Update Department', 'Update Salary', 'Back', 'Done']
+            choices: ['Update Department', 'Update Salary', 'Back']
         }
     ]).then(answer => {
         if (answer.update === 'Update Department') {
@@ -196,17 +196,12 @@ function update() {
         }
         else if (answer.update === 'Update Salary') {
             updateSalary()
-        }
-        else if (answer.update === 'Back') {
-            startingQuestion()
-
         } else {
-            connection.end()
+            startingQuestion()
         }
-
     })
-}
-
+}     
+   
 // UPDATE EMPLOYEE DEPARTMENT
 
 function updateDepartment() {
@@ -257,7 +252,3 @@ function updateSalary() {
         console.table(res);
     };
 })}
-
-
-
-
