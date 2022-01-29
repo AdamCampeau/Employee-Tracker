@@ -21,7 +21,7 @@ function startingQuestion() {
             type: 'list',
             name: 'startingQuestion',
             message: 'What would you like to do?',
-            choices: ['View Departments', 'View Roles', 'View Employees', 'Add Department', 'Add Role', 'Add Employee', 'Update Employee', 'Done']
+            choices: ['View Departments', 'View Roles', 'View Employees', 'Add Department', 'Add Role', 'Add Employee', 'Update Employees Role', 'Done']
         }
     ]).then(answer => {
         if (answer.startingQuestion === 'View Departments') {
@@ -72,25 +72,14 @@ function addDepartment() {
             name: 'department',
             message: 'Enter Department Name'
         },
-        {
-            // add department salary
-            type: 'input',
-            name: 'salary',
-            message: 'Enter Department Salary'
-        },
-    ]).then(answer => {
-        // connection query to insert into the department table
-        connection.query('INSERT INTO department SET ?', (err,res) => {
+        ]).then(answers => {
+        const params = [answers.departemnt]
+        connection.query('INSERT INTO department (department) VALUES (?)',params,(err, res) => {
             if (err) throw err;
             console.table(res);
-            //title: answer.title;
-            //salary: answer.salary;
-            //department_id: answer.department_id;
         })
         startingQuestion();
-    });
-}
-
+    })}
 // ADD EMPLOYEE
 
 function addEmployee() {
@@ -172,9 +161,10 @@ function addRole() {
     },
 ]).then(answer => {
     const params = [answer.title, answer.salary, answer.department_id]
-    connection.query('INSERT INTO role (title,salary,department_id) VALUES (?, ?, ?)',params,(err, res) => {
+    connection.query('INSERT INTO role (title,salary,department_id) VALUES (?, ?, ?)',params,(err, res, fields) => {
         if (err) throw err;
-        console.table(res);
+        console.log('The new role has been added!')
+        //console.table(fields);
         startingQuestion()
     })
 })}

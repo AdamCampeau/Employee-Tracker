@@ -71,15 +71,16 @@ npm start
 
 * [X] view employees 
 
-* [X] add department 
+* [ ] add department 
 
-* [X] add role
+* [ ] add role
+    * console.table() does not show updated table
 
-* [X] add employee
+* [ ] add employee
 
-* [ ] update 
+* [ ] update employee
 
-     Exits
+     Exits right after it is selected
 
 * [x] connection ends
 
