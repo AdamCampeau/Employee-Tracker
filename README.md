@@ -71,21 +71,27 @@ npm start
 
 * [X] view employees 
 
-* [ ] add department 
+* [x] add department 
 
-* [ ] add role
-    * console.table() does not show updated table
+* [x] add role
 
-* [ ] add employee
+* [x] add employee
 
-* [ ] update employee
-
-     Exits right after it is selected
+* [x] update employee
 
 * [x] connection ends
 
 
 ## Future_Development
+* Update employee managers.
+
+* View employees by manager.
+
+* View employees by department.
+
+* Delete departments, roles, and employees.
+
+* View the total utilized budget of a department—in other words, the combined salaries of all employees in that department.
 
 
 ## Contributors
@@ -98,7 +104,7 @@ https://github.com/AdamCampeau
 acampeau3@hotmail.com
 
 ## ScreenCastify Link
-https://watch.screencastify.com/v/hvMDcHtnPKXTKvp6mkTk
+https://watch.screencastify.com/v/vDseO7h49v3R5mHDxiCD
 
 ## GitHub URL
-https://github.com/AdamCampeau/git check
+https://adamcampeau.github.io/MySQL-Employee-Database/
